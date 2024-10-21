@@ -1,0 +1,26 @@
+name: Deploy Services
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v1
+
+    - name: Build and push people-service image
+      run: |
+        docker build -t gcr.io/${{ secrets.GCP_PROJECT_ID }}/people-service:latest ./people-service
+        docker push gcr.io/${{ secrets.GCP_PROJECT_ID }}/people-service:latest
+
+    - name: Deploy people-service to Cloud Run
+      run: |
+        gcloud run deploy people-service --image gcr.io/${{ secrets.GCP_PROJECT_ID }}/people-service:latest --platform managed --region us-central1

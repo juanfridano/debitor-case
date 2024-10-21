@@ -1,0 +1,48 @@
+version: '3.7'
+
+services:
+  people-service:
+    build: ./people-service
+    ports:
+      - "8081:8081"
+    environment:
+      - DB_HOST=${DB_HOST}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_NAME=people_service
+      - DB_PORT=${DB_PORT}
+    depends_on:
+      - postgres
+  contract-service:
+    build: ./contract-service
+    ports:
+      - "8082:8082"
+    environment:
+      - DB_HOST=${DB_HOST}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_NAME=contract_service
+      - DB_PORT=${DB_PORT}
+    depends_on:
+      - postgres
+  property-service:
+    build: ./property-service
+    ports:
+      - "8083:8083"
+    environment:
+      - DB_HOST=${DB_HOST}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_NAME=property_service
+      - DB_PORT=${DB_PORT}
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres:12
+    environment:
+      POSTGRES_USER: yourusername
+      POSTGRES_PASSWORD: yourpassword
+      POSTGRES_DB: people_service
+    ports:
+      - "5432:5432"

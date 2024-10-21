@@ -1,0 +1,18 @@
+people-service/main
+contract-service/main
+property-service/main
+
+*.test
+.env
+*.log
+
+docker-compose.override.yml
+
+# Terraform state files
+*.tfstate
+*.tfstate.*
+.terraform/
+
+# Output directories
+dist/
+bin/
